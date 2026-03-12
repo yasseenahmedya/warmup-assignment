@@ -241,7 +241,7 @@ function addShiftRecord(textFile, shiftObj) {
     // calculate shiftDuration
     let startSec = timeToSeconds(shiftObj.startTime);
     let endSec = timeToSeconds(shiftObj.endTime);
-    let shiftDuration = secondsToTime(endSec - startSec);
+    let shiftDuration = secondsToTime(Math.max(0, endSec - startSec));
 
     // calculate idleTime
     let deliveryStart = 8 * 3600;
@@ -260,7 +260,7 @@ function addShiftRecord(textFile, shiftObj) {
     let idleTime = secondsToTime(idle);
 
     // calculate activeTime
-    let activeTime = secondsToTime((endSec - startSec) - idle);
+    let activeTime = secondsToTime(Math.max(0, (endSec - startSec) - idle));
 
     // metQuota
     let d = shiftObj.date.split("-");
@@ -524,7 +524,7 @@ function getRequiredHoursPerMonth(textFile, rateFile, bonusCount, driverID, mont
     let totalSeconds = 0;
 
     function dayName(dateStr) {
-        let d = new Date(dateStr);
+        let d = new Date(dateStr + "T00:00:00");
         return d.toLocaleDateString("en-US", { weekday: "long" });
     }
 
